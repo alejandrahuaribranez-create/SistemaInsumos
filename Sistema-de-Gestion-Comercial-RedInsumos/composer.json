@@ -1,0 +1,20 @@
+{
+    "name": "redinsumos/sistema-gestion-comercial",
+    "description": "Base arquitectónica del Sistema de Gestión Comercial RedInsumos.",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.1",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "RedInsumos\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

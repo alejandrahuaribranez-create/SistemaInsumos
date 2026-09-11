@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "format": "webp",
+  "hero": {
+    "desktop": "home/hero-network-1200.webp",
+    "compact": "home/hero-network-720.webp"
+  },
+  "products": [
+    {"key": "router", "label": "Routers", "large": "products/800/router-wifi6.webp", "thumb": "products/320/router-wifi6.webp"},
+    {"key": "switch", "label": "Switches", "large": "products/800/switch-24-puertos.webp", "thumb": "products/320/switch-24-puertos.webp"},
+    {"key": "cableado", "label": "Cableado", "large": "products/800/cable-ethernet-cat6.webp", "thumb": "products/320/cable-ethernet-cat6.webp"},
+    {"key": "fibra", "label": "Fibra óptica", "large": "products/800/fibra-optica.webp", "thumb": "products/320/fibra-optica.webp"},
+    {"key": "herramientas", "label": "Herramientas", "large": "products/800/crimpadora-rj45.webp", "thumb": "products/320/crimpadora-rj45.webp"},
+    {"key": "access-point", "label": "Puntos de acceso", "large": "products/800/access-point-techo.webp", "thumb": "products/320/access-point-techo.webp"},
+    {"key": "patch-panel", "label": "Patch panels", "large": "products/800/patch-panel-24-puertos.webp", "thumb": "products/320/patch-panel-24-puertos.webp"},
+    {"key": "rack", "label": "Gabinetes rack", "large": "products/800/gabinete-rack-12u.webp", "thumb": "products/320/gabinete-rack-12u.webp"},
+    {"key": "sfp", "label": "Módulos SFP", "large": "products/800/modulos-sfp.webp", "thumb": "products/320/modulos-sfp.webp"},
+    {"key": "tester", "label": "Comprobadores", "large": "products/800/tester-red.webp", "thumb": "products/320/tester-red.webp"},
+    {"key": "conectores", "label": "Conectores RJ45", "large": "products/800/conectores-rj45.webp", "thumb": "products/320/conectores-rj45.webp"},
+    {"key": "ups", "label": "Energía y UPS", "large": "products/800/ups-red.webp", "thumb": "products/320/ups-red.webp"},
+    {"key": "poe", "label": "Adaptadores PoE", "large": "products/800/inyector-poe.webp", "thumb": "products/320/inyector-poe.webp"}
+  ]
+}
