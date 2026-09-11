@@ -10,7 +10,7 @@ $pageHeading = isset($editingCategory) && $editingCategory !== null
 $pageDescription = 'Administra las categorías utilizadas en el catálogo.';
 ?>
 
-<?php require dirname(__DIR__, 4) . '/Shared/Presentation/Views/components/page-header.php'; ?>
+<?php require dirname(__DIR__, 5) . '/Shared/Presentation/Views/components/page-header.php'; ?>
 
 <section class="container-fluid px-0">
 
@@ -35,7 +35,7 @@ $pageDescription = 'Administra las categorías utilizadas en el catálogo.';
                     action="<?= htmlspecialchars(
                         $url->to(
                             $editingCategory !== null
-                                ? '/admin/categorias/' . $editingCategory->id . '/editar'
+                                ? '/admin/categorias/' . $editingCategory->id
                                 : '/admin/categorias'
                         ),
                         ENT_QUOTES,
@@ -354,6 +354,19 @@ $pageDescription = 'Administra las categorías utilizadas en el catálogo.';
                                                             : 'Activar' ?>
                                                     </button>
 
+                                                </form>
+
+                                                <form
+                                                    method="post"
+                                                    action="<?= htmlspecialchars(
+                                                        $url->to('/admin/categorias/' . $category->id . '/eliminar'),
+                                                        ENT_QUOTES,
+                                                        'UTF-8'
+                                                    ) ?>"
+                                                    onsubmit="return confirm('¿Eliminar esta categoría? Si tiene productos o subcategorías deberás desactivarla.');"
+                                                >
+                                                    <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
                                                 </form>
 
                                             </div>

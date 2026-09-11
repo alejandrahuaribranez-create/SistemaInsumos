@@ -7,6 +7,8 @@ use RedInsumos\Modules\Identity\Application\RegisterClient;
 use RedInsumos\Modules\Identity\Infrastructure\MariaDbUserRepository;
 use RedInsumos\Modules\Identity\Presentation\Controllers\AccountController;
 use RedInsumos\Modules\Identity\Presentation\Controllers\AuthController;
+use RedInsumos\Modules\Sales\Application\ManageCart;
+use RedInsumos\Modules\Sales\Presentation\Controllers\CartController;
 use RedInsumos\Shared\Infrastructure\Session\Session;
 use RedInsumos\Shared\Presentation\Http\Router;
 use RedInsumos\Shared\Presentation\Http\ViewRenderer;
@@ -20,8 +22,9 @@ return static function (Router $router, \PDO $pdo, Session $session, ViewRendere
         $session,
         $views
     );
-    $accountController = new AccountController($views);
-    $clientRole = new RoleMiddleware($session, $views);
+    $accountController = new AccountController($pdo, $session, $views);
+    $clientRole = new RoleMiddleware($session, $views, $pdo);
+    $cartController = new CartController(new ManageCart($pdo), $session, $views);
 
     $router->get('/register', [$authController, 'showRegister']);
     $router->post('/register', [$authController, 'register']);
@@ -31,4 +34,9 @@ return static function (Router $router, \PDO $pdo, Session $session, ViewRendere
     $router->get('/mi-cuenta', static function ($request) use ($clientRole, $accountController) {
         return $clientRole->handle(['CLIENTE']) ?? $accountController->show($request);
     });
+    $router->get('/carrito', static fn ($request) => $clientRole->handle(['CLIENTE']) ?? $cartController->clientIndex($request));
+    $router->post('/carrito/agregar', static fn ($request) => $clientRole->handle(['CLIENTE']) ?? $cartController->addClient($request));
+    $router->post('/carrito/confirmar', static fn ($request) => $clientRole->handle(['CLIENTE']) ?? $cartController->checkoutClient($request));
+    $router->post('/carrito/{id}', static fn ($request) => $clientRole->handle(['CLIENTE']) ?? $cartController->updateClient($request));
+    $router->post('/carrito/{id}/eliminar', static fn ($request) => $clientRole->handle(['CLIENTE']) ?? $cartController->removeClient($request));
 };

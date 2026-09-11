@@ -40,8 +40,14 @@ $picturePriority = true;
             <div><dt>Existencias</dt><dd><?= $product->stock ?> unidades</dd></div>
         </dl>
 
-        <a class="btn btn-primary product-detail__back" href="<?= htmlspecialchars($url->to('/catalogo'), ENT_QUOTES, 'UTF-8') ?>">
-            Volver al catálogo <?= redinsumos_icon('arrow-right') ?>
-        </a>
+        <?php if ($user !== null && $user['role'] === 'CLIENTE' && $product->stock > 0): ?>
+            <form method="post" action="<?= htmlspecialchars($url->to('/carrito/agregar'), ENT_QUOTES, 'UTF-8') ?>" class="d-flex gap-2 align-items-end">
+                <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="id_producto" value="<?= $product->id ?>">
+                <div><label class="form-label" for="cantidad">Cantidad</label><input class="form-control" id="cantidad" type="number" name="cantidad" min="1" max="<?= $product->stock ?>" value="1" required></div>
+                <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+            </form>
+        <?php endif; ?>
+        <a class="btn btn-outline-primary product-detail__back" href="<?= htmlspecialchars($url->to('/catalogo'), ENT_QUOTES, 'UTF-8') ?>">Volver al catálogo <?= redinsumos_icon('arrow-right') ?></a>
     </section>
 </article>

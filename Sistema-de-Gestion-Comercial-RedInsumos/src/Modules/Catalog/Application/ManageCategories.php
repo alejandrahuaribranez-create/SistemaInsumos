@@ -34,6 +34,8 @@ final class ManageCategories
         $parentId = $this->normalizeParentId($data['id_padre'] ?? null);
 
         $this->validateName($name);
+        $this->validateUniqueName($name);
+        $this->validateParent($parentId);
 
         return $this->categories->create(
             $name,
@@ -60,6 +62,8 @@ final class ManageCategories
         }
 
         $this->validateName($name);
+        $this->validateUniqueName($name, $id);
+        $this->validateParent($parentId, $id);
 
         $this->categories->update(
             $id,
@@ -84,6 +88,27 @@ final class ManageCategories
         $this->categories->setStatus($id, $newStatus);
     }
 
+    public function delete(int $id): void
+    {
+        $category = $this->find($id);
+
+        if ($category === null) {
+            throw new InvalidArgumentException('La categoría no existe.');
+        }
+
+        $references = $this->categories->referenceCounts($id);
+
+        if ($references['products'] > 0 || $references['children'] > 0) {
+            throw new InvalidArgumentException(sprintf(
+                'No se puede eliminar: tiene %d producto(s) y %d subcategoría(s). Desactívala para conservar las relaciones.',
+                $references['products'],
+                $references['children']
+            ));
+        }
+
+        $this->categories->delete($id);
+    }
+
     private function validateName(string $name): void
     {
         if ($name === '') {
@@ -96,6 +121,37 @@ final class ManageCategories
             throw new InvalidArgumentException(
                 'El nombre de la categoría no puede superar los 100 caracteres.'
             );
+        }
+    }
+
+    private function validateUniqueName(string $name, ?int $excludeId = null): void
+    {
+        if ($this->categories->existsByName($name, $excludeId)) {
+            throw new InvalidArgumentException('Ya existe una categoría con ese nombre.');
+        }
+    }
+
+    private function validateParent(?int $parentId, ?int $categoryId = null): void
+    {
+        if ($parentId === null) {
+            return;
+        }
+
+        $parent = $this->categories->findById($parentId);
+        if ($parent === null) {
+            throw new InvalidArgumentException('La categoría padre no existe.');
+        }
+
+        $visited = [];
+        while ($parent !== null) {
+            if ($categoryId !== null && $parent->id === $categoryId) {
+                throw new InvalidArgumentException('La jerarquía de categorías no puede contener ciclos.');
+            }
+            if (isset($visited[$parent->id])) {
+                throw new InvalidArgumentException('La jerarquía de categorías existente contiene un ciclo.');
+            }
+            $visited[$parent->id] = true;
+            $parent = $parent->parentId !== null ? $this->categories->findById($parent->parentId) : null;
         }
     }
 

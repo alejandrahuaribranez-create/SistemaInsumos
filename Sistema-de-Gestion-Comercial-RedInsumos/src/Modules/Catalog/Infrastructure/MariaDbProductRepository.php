@@ -16,7 +16,7 @@ final class MariaDbProductRepository implements ProductRepository
 
     public function search(string $term): array
     {
-        $sql = $this->baseQuery() . " WHERE p.estado = 'activo'";
+        $sql = $this->baseQuery() . " WHERE p.estado = 'activo' AND c.estado = 'activo'";
         $parameters = [];
 
         if ($term !== '') {
@@ -40,7 +40,7 @@ final class MariaDbProductRepository implements ProductRepository
     public function findById(int $id): ?Product
     {
         $statement = $this->pdo->prepare(
-            $this->baseQuery() . " WHERE p.id_producto = :id AND p.estado = 'activo' LIMIT 1"
+            $this->baseQuery() . " WHERE p.id_producto = :id AND p.estado = 'activo' AND c.estado = 'activo' LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $row = $statement->fetch();

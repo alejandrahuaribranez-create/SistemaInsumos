@@ -79,6 +79,23 @@ final class MariaDbCategoryRepository implements CategoryRepository
             : null;
     }
 
+    public function existsByName(string $name, ?int $excludeId = null): bool
+    {
+        $sql = 'SELECT 1 FROM categorias WHERE LOWER(nombre) = LOWER(:name)';
+        $parameters = ['name' => $name];
+
+        if ($excludeId !== null) {
+            $sql .= ' AND id_categoria <> :exclude_id';
+            $parameters['exclude_id'] = $excludeId;
+        }
+
+        $sql .= ' LIMIT 1';
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($parameters);
+
+        return $statement->fetchColumn() !== false;
+    }
+
     public function create(
         string $name,
         ?string $description,
@@ -137,6 +154,25 @@ final class MariaDbCategoryRepository implements CategoryRepository
             'id' => $id,
             'status' => $status,
         ]);
+    }
+
+    public function referenceCounts(int $id): array
+    {
+        $products = $this->pdo->prepare('SELECT COUNT(*) FROM productos WHERE id_categoria = :id');
+        $products->execute(['id' => $id]);
+        $children = $this->pdo->prepare('SELECT COUNT(*) FROM categorias WHERE id_padre = :id');
+        $children->execute(['id' => $id]);
+
+        return [
+            'products' => (int) $products->fetchColumn(),
+            'children' => (int) $children->fetchColumn(),
+        ];
+    }
+
+    public function delete(int $id): void
+    {
+        $statement = $this->pdo->prepare('DELETE FROM categorias WHERE id_categoria = :id');
+        $statement->execute(['id' => $id]);
     }
 
     private function map(array $row): Category

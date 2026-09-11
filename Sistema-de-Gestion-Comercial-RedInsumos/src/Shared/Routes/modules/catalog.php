@@ -77,7 +77,7 @@ return static function (
      * ADMINISTRACIÓN DEL CATÁLOGO
      */
 
-    $roles = new RoleMiddleware($session, $views);
+    $roles = new RoleMiddleware($session, $views, $pdo);
 
     /*
      * CATEGORÍAS
@@ -143,7 +143,15 @@ return static function (
             $categoryController
         ) {
             return $roles->handle(['ADMIN'])
-                ?? $categoryController->toggle($request);
+                ?? $categoryController->toggleStatus($request);
+        }
+    );
+
+    $router->post(
+        '/admin/categorias/{id}/eliminar',
+        static function ($request) use ($roles, $categoryController) {
+            return $roles->handle(['ADMIN'])
+                ?? $categoryController->delete($request);
         }
     );
 

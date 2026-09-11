@@ -21,6 +21,7 @@ if (PHP_SAPI === 'cli-server') {
         && $requestedFile !== false
         && str_starts_with($requestedFile, $publicRoot . DIRECTORY_SEPARATOR)
         && is_file($requestedFile)
+        && strtolower((string) pathinfo($requestedFile, PATHINFO_EXTENSION)) !== 'php'
     ) {
         return false;
     }

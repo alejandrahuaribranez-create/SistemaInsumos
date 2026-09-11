@@ -136,4 +136,20 @@ final class CategoryAdminController
 
         return Response::redirect('/admin/categorias');
     }
+
+    public function delete(Request $request): Response
+    {
+        try {
+            if (!$this->session->isValidCsrf($request->input('_csrf'))) {
+                throw new \InvalidArgumentException('La sesión no es válida. Recarga la página.');
+            }
+
+            $this->categories->delete((int) $request->route('id', 0));
+            $this->session->flash('success', 'La categoría fue eliminada físicamente.');
+        } catch (Throwable $exception) {
+            $this->session->flash('warning', $exception->getMessage());
+        }
+
+        return Response::redirect('/admin/categorias');
+    }
 }

@@ -125,35 +125,10 @@ $pageDescription = 'Bienvenido, ' . $user['name'] . '.';
             <h2>Usuarios</h2>
 
             <p>
-                La gestión administrativa de usuarios será implementada
-                en la siguiente etapa.
+                Crea, modifica, desactiva y asigna responsabilidades a los usuarios.
             </p>
 
-            <span class="status-label">
-                <?= redinsumos_icon('info') ?>
-                Pendiente
-            </span>
-        </div>
-
-    </article>
-
-    <article class="bento-card dashboard-card">
-
-        <span class="dashboard-card__icon">
-            <?= redinsumos_icon('info') ?>
-        </span>
-
-        <div>
-            <h2>Auditoría</h2>
-
-            <p>
-                La consulta de trazabilidad se implementará posteriormente.
-            </p>
-
-            <span class="status-label">
-                <?= redinsumos_icon('info') ?>
-                Pendiente
-            </span>
+            <a class="btn btn-primary" href="<?= htmlspecialchars($url->to('/admin/usuarios'), ENT_QUOTES, 'UTF-8') ?>">Gestionar usuarios</a>
         </div>
 
     </article>

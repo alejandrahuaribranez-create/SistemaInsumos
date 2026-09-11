@@ -34,6 +34,7 @@ $isCatalog = str_starts_with($currentPath, rtrim($url->to('/catalogo'), '/'))
                         <a class="btn btn-ghost" href="<?= htmlspecialchars($url->to('/login'), ENT_QUOTES, 'UTF-8') ?>">Iniciar sesión</a>
                         <a class="btn btn-primary" href="<?= htmlspecialchars($url->to('/register'), ENT_QUOTES, 'UTF-8') ?>">Registrarse</a>
                     <?php else: ?>
+                        <?php if ($user['role'] === 'CLIENTE'): ?><a class="btn btn-ghost" href="<?= htmlspecialchars($url->to('/carrito'), ENT_QUOTES, 'UTF-8') ?>">Carrito</a><?php endif; ?>
                         <a class="account-link" href="<?= htmlspecialchars($url->to((string) $dashboardUrl), ENT_QUOTES, 'UTF-8') ?>">
                             <?= redinsumos_icon('user') ?>
                             <span><small>Mi espacio</small><?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?></span>

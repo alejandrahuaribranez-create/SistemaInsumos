@@ -1,17 +1,9 @@
-<?php
-declare(strict_types=1);
-$dashboardItems = [
-    ['Ventas', 'El registro de ventas asistidas se incorporará en una próxima iteración.', 'box'],
-    ['Pedidos', 'La gestión comercial de pedidos todavía no está disponible.', 'info'],
-    ['Clientes', 'La consulta operativa de clientes permanece pendiente.', 'user'],
-];
-$pageEyebrow = 'Rol ' . $user['role'];
-$pageHeading = 'Panel de Ventas';
-$pageDescription = 'Bienvenido, ' . $user['name'] . '.';
-?>
-<?php require dirname(__DIR__, 4) . '/Shared/Presentation/Views/components/page-header.php'; ?>
-<section class="dashboard-grid" aria-label="Módulos de ventas">
-    <?php foreach ($dashboardItems as [$dashboardTitle, $dashboardDescription, $dashboardIcon]): ?>
-        <?php require dirname(__DIR__, 4) . '/Shared/Presentation/Views/components/dashboard-card.php'; ?>
-    <?php endforeach; ?>
-</section>
+<?php declare(strict_types=1); ?>
+<div class="container py-4">
+    <p class="text-primary fw-semibold mb-1">Rol <?= htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8') ?></p>
+    <h1 class="h2">Panel de ventas</h1><p>Bienvenido, <?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>.</p>
+    <div class="row g-4 mt-2">
+        <div class="col-md-6"><article class="bento-card p-4 h-100"><h2>Productos</h2><p>Registra y modifica productos sin alterar existencias.</p><a class="btn btn-primary" href="<?= htmlspecialchars($url->to('/vendedor/productos'), ENT_QUOTES, 'UTF-8') ?>">Gestionar productos</a></article></div>
+        <div class="col-md-6"><article class="bento-card p-4 h-100"><h2>Venta asistida</h2><p>Prepara una operación en un carrito independiente de los clientes.</p><a class="btn btn-primary" href="<?= htmlspecialchars($url->to('/vendedor/carrito'), ENT_QUOTES, 'UTF-8') ?>">Abrir carrito</a></article></div>
+    </div>
+</div>
